@@ -1,0 +1,8 @@
+{
+  "name": "Remix: FavWish",
+  "description": "A premium, couples/lover-themed e-commerce gifting store featuring custom engraving, interactive listings, secure mock checkout, and romantic visual design.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile with contact information",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The user's display name",
+          "maxLength": 100
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "The user's email address"
+        },
+        "phone": {
+          "type": "string",
+          "description": "The user's phone number"
+        }
+      },
+      "required": ["name"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "E-commerce order details",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unique order ID"
+        },
+        "date": {
+          "type": "string",
+          "description": "Order creation date"
+        },
+        "items": {
+          "type": "array",
+          "description": "List of ordered items"
+        },
+        "subtotal": {
+          "type": "number",
+          "description": "Subtotal before discount and shipping"
+        },
+        "discount": {
+          "type": "number",
+          "description": "Applied discount amount"
+        },
+        "shipping": {
+          "type": "number",
+          "description": "Shipping cost"
+        },
+        "total": {
+          "type": "number",
+          "description": "Total order amount"
+        },
+        "paymentMethod": {
+          "type": "string",
+          "description": "Method of payment"
+        },
+        "status": {
+          "type": "string",
+          "description": "Delivery or processing status"
+        },
+        "trackingNumber": {
+          "type": "string",
+          "description": "Courier tracking number"
+        }
+      },
+      "required": ["id", "date", "items", "total", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "Collection of registered user profiles"
+    },
+    "/users/{userId}/orders/{orderId}": {
+      "schema": { "$ref": "#/entities/Order" },
+      "description": "Collection of orders placed by each user"
+    }
+  }
+}

@@ -1,0 +1,72 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global safety catch-all: Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- REUSABLE SECURITY PRIMITIVES ---
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // --- VALIDATION BLUEPRINTS ---
+    function isValidUser(data) {
+      return data.keys().hasAll(['name'])
+        && data.name is string && data.name.size() > 0 && data.name.size() <= 120;
+    }
+
+    function isValidOrder(data) {
+      return data.keys().hasAll(['id', 'date', 'items', 'total', 'status'])
+        && data.id is string && data.id.size() <= 64
+        && data.date is string && data.date.size() <= 64
+        && data.items is list && data.items.size() <= 100
+        && data.total is number && data.total >= 0
+        && data.status is string && data.status.size() <= 32;
+    }
+
+    // --- COLLECTION PATH MATCHERS ---
+    
+    // 1. Users collection
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if false; // Users cannot be listed in bulk
+      
+      allow create: if isOwner(userId) && isValidId(userId) && isValidUser(incoming());
+      
+      allow update: if isOwner(userId) && isValidId(userId) && isValidUser(incoming());
+        
+      allow delete: if isOwner(userId) && isValidId(userId);
+
+      // 2. Nested user orders sub-collection
+      match /orders/{orderId} {
+        allow get, list: if isOwner(userId);
+        
+        allow create: if isOwner(userId) && isValidId(orderId) && isValidOrder(incoming());
+        
+        allow update: if isOwner(userId) && isValidId(orderId) && isValidOrder(incoming());
+          
+        allow delete: if isOwner(userId) && isValidId(orderId);
+      }
+    }
+  }
+}
