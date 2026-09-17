@@ -17,7 +17,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./remix-_fawvish
+        working-directory: ./remix-fawvish
 
     steps:
       - name: Checkout
@@ -43,7 +43,7 @@ jobs:
       - name: Upload website
         uses: actions/upload-pages-artifact@v4
         with:
-          path: './remix-_fawvish/dist'
+          path: './remix-fawvish/dist'
 
   deploy:
     needs: build
