@@ -15,6 +15,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: ./remix-_fawvish
+
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -39,7 +43,7 @@ jobs:
       - name: Upload website
         uses: actions/upload-pages-artifact@v4
         with:
-          path: './dist'
+          path: './remix-_fawvish/dist'
 
   deploy:
     needs: build
