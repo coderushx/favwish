@@ -1,0 +1,16 @@
+[
+  {
+    "id": "lamp",
+    "name": "lamp",
+    "category": "kids",
+    "price": 350,
+    "description": "khtffgbjkgjhg",
+    "link": "https://m.media-amazon.com/images/I/71bR-cjcAPL._SL1254_.jpg",
+    "image": "images/products/lamp-1791187875548-0.png",
+    "images": [
+      "images/products/lamp-1791187875548-0.png"
+    ],
+    "updatedAt": "2026-10-05T08:11:15.548Z",
+    "createdAt": "2026-10-05T08:11:15.548Z"
+  }
+]
